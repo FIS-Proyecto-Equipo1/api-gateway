@@ -1,0 +1,70 @@
+http:
+  port: 9080
+apiEndpoints:
+  auth:
+    paths: 
+      - '/auth/api/v1/user'
+      - '/auth/api/v1/login'
+  api:
+    path: '/*'
+serviceEndpoints:
+  auth:
+    url: 'http://localhost:4000'
+  reservas:
+    url: 'http://localhost:4041'
+policies:
+  - log
+  - jwt
+  - request-transformer
+  - proxy
+pipelines:
+  authPipeline:
+    apiEndpoints:
+      - auth
+    policies:
+      -
+        log:
+          action:
+            message: 'auth ${req.method}'
+      -
+        proxy:
+          action:
+            serviceEndpoint: auth
+  
+  apiSecuredPipeline:
+    apiEndpoints:
+      - api
+    policies:
+      -
+        log:
+          action:
+            message: 'Request ${req.method} ${req.path}'
+      -
+        jwt:
+          action:
+            secretOrPublicKey: ${SIGN_KEY:-'669B523BBC1157221D3AAA35E8398'}
+            checkCredentialExistence: false
+
+      -
+        request-transformer:
+          action:
+            headers:
+              add:
+                x-user: req.user.userId
+      -
+        proxy:
+          - # Reservas
+            condition:
+              name: pathExact
+              path: /api/v1/pruebas-auth
+            action: 
+              serviceEndpoint: reservas
+          - # Reservas
+            condition:
+              name: pathMatch
+              pattern: "/api/v1/reservas*"
+            action: 
+              serviceEndpoint: reservas
+          - # Defecto
+            action: 
+              serviceEndpoint: auth
