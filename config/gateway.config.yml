@@ -3,15 +3,21 @@ http:
 apiEndpoints:
   auth:
     paths: 
-      - '/auth/api/v1/user'
-      - '/auth/api/v1/login'
+      - '/api/v1/user'
+      - '/api/v1/login'
   api:
     path: '/*'
 serviceEndpoints:
   auth:
     url: 'https://urbanio-autenticacion.herokuapp.com'
+  facturacion:
+    url: 'https://urbanio-facturacion.herokuapp.com'
   reservas:
     url: 'https://urbanio-reservas.herokuapp.com'
+  vehiculos:
+    url: 'https://urbanio-vehiculos.herokuapp.com'
+  viajes:
+    url: 'https://urbanio-viajes.herokuapp.com'
 policies:
   - log
   - jwt
@@ -51,6 +57,7 @@ pipelines:
             headers:
               add:
                 x-user: req.user.userId
+                x-rol: req.user.role
       -
         proxy:
           - # Reservas
@@ -65,6 +72,24 @@ pipelines:
               pattern: "/api/v1/reservas*"
             action: 
               serviceEndpoint: reservas
+          - # Facturación
+            condition:
+              name: pathMatch
+              pattern: "/api/v1/facturacion*"
+            action: 
+              serviceEndpoint: facturacion
+          - # Vehículos
+            condition:
+              name: pathMatch
+              pattern: "/api/v1/vehicles*"
+            action: 
+              serviceEndpoint: vehiculos
+          - # Viajes
+            condition:
+              name: pathMatch
+              pattern: "/api/v1/viajes*"
+            action: 
+              serviceEndpoint: viajes
           - # Defecto
             action: 
               serviceEndpoint: auth
