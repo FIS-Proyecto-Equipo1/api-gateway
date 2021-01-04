@@ -1,5 +1,5 @@
 http:
-  port: 9080
+  port: ${PORT:-'9080'}
 apiEndpoints:
   auth:
     paths: 
@@ -9,9 +9,9 @@ apiEndpoints:
     path: '/*'
 serviceEndpoints:
   auth:
-    url: 'http://localhost:4000'
+    url: 'https://urbanio-autenticacion.herokuapp.com'
   reservas:
-    url: 'http://localhost:4041'
+    url: 'https://urbanio-reservas.herokuapp.com'
 policies:
   - log
   - jwt
