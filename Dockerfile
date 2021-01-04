@@ -7,6 +7,7 @@ COPY package-lock.json .
 
 RUN npm install
 
+COPY server.js .
 COPY /config ./config
 
 ENV PORT=80
