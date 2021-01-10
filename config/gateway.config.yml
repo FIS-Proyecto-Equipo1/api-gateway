@@ -5,6 +5,7 @@ apiEndpoints:
     paths: 
       - '/api/v1/user'
       - '/api/v1/login'
+    methods: ["POST"]
   api:
     path: '/*'
 serviceEndpoints:
