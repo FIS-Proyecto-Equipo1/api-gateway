@@ -18,7 +18,7 @@ serviceEndpoints:
   vehiculos:
     url: 'https://urbanio-vehiculos.herokuapp.com'
   viajes:
-    url: 'https://urbanio-viajes.herokuapp.com'
+    url: 'https://microservice-travel.herokuapp.com'
 policies:
   - log
   - jwt
@@ -88,7 +88,7 @@ pipelines:
           - # Viajes
             condition:
               name: pathMatch
-              pattern: "/api/v1/viajes*"
+              pattern: "/api/v1/travels*"
             action: 
               serviceEndpoint: viajes
           - # Defecto
