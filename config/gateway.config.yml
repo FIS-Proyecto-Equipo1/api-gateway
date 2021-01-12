@@ -24,11 +24,15 @@ policies:
   - jwt
   - request-transformer
   - proxy
+  - cors
 pipelines:
   authPipeline:
     apiEndpoints:
       - auth
     policies:
+      - cors:
+          action:
+            origin: '*'
       -
         log:
           action:
@@ -42,6 +46,9 @@ pipelines:
     apiEndpoints:
       - api
     policies:
+      - cors:
+          action:
+            origin: '*'
       -
         log:
           action:
