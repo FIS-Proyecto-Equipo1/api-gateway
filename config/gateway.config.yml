@@ -12,7 +12,7 @@ serviceEndpoints:
   auth:
     url: 'https://urbanio-autenticacion.herokuapp.com'
   facturacion:
-    url: 'https://urbanio-facturacion.herokuapp.com'
+    url: 'https://backend-facturacion-1.herokuapp.com/'
   reservas:
     url: 'https://urbanio-reservas.herokuapp.com'
   vehiculos:
@@ -83,7 +83,7 @@ pipelines:
           - # Facturación
             condition:
               name: pathMatch
-              pattern: "/api/v1/facturacion*"
+              pattern: "/api/v1/bills*"
             action: 
               serviceEndpoint: facturacion
           - # Vehículos
